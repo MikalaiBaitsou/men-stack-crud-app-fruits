@@ -17,6 +17,10 @@
 		<span>Not Ready to eat</span>
 	<% } %>
 
+	<form method="POST" action="/fruits/<%= fruitDoc._id %>?_method=DELETE">
+		<button type="submit">Delete resource</button>
+	</form>
+
 </body>
 
 </html>

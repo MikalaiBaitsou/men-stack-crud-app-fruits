@@ -4,6 +4,8 @@ dotenv.config()// load the variables from .env file!
 
 const express = require('express')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
+const methodOverride = require('method-override')
 //initailize the express app
 const app = express()
 
@@ -21,12 +23,20 @@ mongoose.connection.on('connected', function(){
 // middleware to process the form requests
 // so our routes can access req.body which is the contents of the form
 app.use(express.urlencoded({ extended: false }));
-
-
+app.use(morgan("dev")); //new
+app.use(methodOverride("_method")); // 
 
 app.get('/', function(req, res){
 	res.render('index.ejs')
 })
+
+app.delete('/fruits/:fruitId', async function(req, res){
+
+	const deletedFruit = await FruitModel.findByIdAndDelete(req.params.fruitId)
+
+	res.redirect('/fruits')
+})
+
 
 app.get('/fruits', async function(req, res){
 	// get all of the fruits from the db!

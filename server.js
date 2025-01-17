@@ -45,6 +45,18 @@ app.get('/fruits/new', function(req, res){
 	res.render('fruits/new.ejs')
 })
 
+// the new route must be defined before the show, because params are catch alls
+app.get('/fruits/:fruitId', async function(req, res){
+	console.log(req.params.fruitId, " <- req.params.fruitId")
+
+	// using the id from the request, 
+	// tell the model to go find that specific fruit from the database!
+	const fruitDoc = await FruitModel.findById(req.params.fruitId)
+	console.log(fruitDoc)
+
+	res.render('fruits/show.ejs', {fruitDoc: fruitDoc})
+})
+
 app.post('/fruits', async function(req, res){
 
 	// to access the contents of the form

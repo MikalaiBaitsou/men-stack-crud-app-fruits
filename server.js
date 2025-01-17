@@ -28,10 +28,20 @@ app.get('/', function(req, res){
 	res.render('index.ejs')
 })
 
+app.get('/fruits', async function(req, res){
+	// get all of the fruits from the db!
+
+	const allFruitDocs = await FruitModel.find({})
+	console.log(allFruitDocs)
+
+	res.render('fruits/index.ejs', {fruitDocs: allFruitDocs})
+})
+
+
 app.get('/fruits/new', function(req, res){
 
 	// render always looks in the views folder
-	// for the our ejs files!
+	// for the our ejs filesres.render('fruits/new.ejs')!
 	res.render('fruits/new.ejs')
 })
 
@@ -44,11 +54,17 @@ app.post('/fruits', async function(req, res){
 	} else {
 		req.body.isReadyToEat = false
 	}
+
+	// one line of if/else
+	// req.body.isReadyToEat = !!req.body.isReadyToEat
+
+
 	// req.body is the contents of the form that we want to put in the 
 	// db
 	const fruitDoc = await FruitModel.create(req.body)
 	console.log(fruitDoc)
-	res.send('fruits post route')
+	res.redirect('/fruits') // tell the client to make a get
+	// request to /fruits 
 })
 
 
